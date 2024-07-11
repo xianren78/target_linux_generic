@@ -88,10 +88,10 @@ Signed-off-by: Daniel Golle <daniel@makrotopia.org>
  	kfree(ap->slave_link);
  	kfree(ap->ncq_sense_buf);
 +#ifdef CONFIG_ATA_LEDS
-+		if (ap->ledtrig) {
-+			led_trigger_unregister(ap->ledtrig);
-+			kfree(ap->ledtrig);
-+		};
++	if (ap->ledtrig) {
++		led_trigger_unregister(ap->ledtrig);
++		kfree(ap->ledtrig);
++	};
 +#endif
  	kfree(ap);
  }
