@@ -39,7 +39,8 @@ Cc: linux-kernel@vger.kernel.org
 -void __init bringup_nonboot_cpus(unsigned int setup_max_cpus)
 +void __init bringup_nonboot_cpus(unsigned int max_cpus)
  {
- 	if (!setup_max_cpus)
+-	if (!setup_max_cpus)
++	if (!max_cpus)
  		return;
  
  	/* Try parallel bringup optimization if enabled */
