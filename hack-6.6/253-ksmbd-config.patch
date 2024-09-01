@@ -10,7 +10,7 @@ Subject: [PATCH] Kconfig: add tristate for OID and ASNI string
 
 --- a/init/Kconfig
 +++ b/init/Kconfig
-@@ -1980,7 +1980,7 @@ config PADATA
+@@ -1983,7 +1983,7 @@ config PADATA
  	bool
  
  config ASN1
