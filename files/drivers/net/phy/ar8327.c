@@ -23,6 +23,7 @@
 #include <linux/lockdep.h>
 #include <linux/ar8216_platform.h>
 #include <linux/workqueue.h>
+#include <linux/of.h>
 #include <linux/of_device.h>
 #include <linux/leds.h>
 #include <linux/mdio.h>
@@ -1171,6 +1172,7 @@ ar8327_sw_hw_apply(struct switch_dev *dev)
 	return 0;
 }
 
+static
 int
 ar8327_sw_get_port_igmp_snooping(struct switch_dev *dev,
 				 const struct switch_attr *attr,
@@ -1189,6 +1191,7 @@ ar8327_sw_get_port_igmp_snooping(struct switch_dev *dev,
 	return 0;
 }
 
+static
 int
 ar8327_sw_set_port_igmp_snooping(struct switch_dev *dev,
 				 const struct switch_attr *attr,
@@ -1207,6 +1210,7 @@ ar8327_sw_set_port_igmp_snooping(struct switch_dev *dev,
 	return 0;
 }
 
+static
 int
 ar8327_sw_get_igmp_snooping(struct switch_dev *dev,
 			    const struct switch_attr *attr,
@@ -1224,6 +1228,7 @@ ar8327_sw_get_igmp_snooping(struct switch_dev *dev,
 	return 0;
 }
 
+static
 int
 ar8327_sw_set_igmp_snooping(struct switch_dev *dev,
 			    const struct switch_attr *attr,
@@ -1240,6 +1245,7 @@ ar8327_sw_set_igmp_snooping(struct switch_dev *dev,
 	return 0;
 }
 
+static
 int
 ar8327_sw_get_igmp_v3(struct switch_dev *dev,
 		      const struct switch_attr *attr,
@@ -1256,6 +1262,7 @@ ar8327_sw_get_igmp_v3(struct switch_dev *dev,
 	return 0;
 }
 
+static
 int
 ar8327_sw_set_igmp_v3(struct switch_dev *dev,
 		      const struct switch_attr *attr,

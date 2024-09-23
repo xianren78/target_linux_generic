@@ -1,0 +1,31 @@
+From 5e8c2e7bb38a51b591c775731f83f43440bc9b5e Mon Sep 17 00:00:00 2001
+From: James Clark <james.clark@arm.com>
+Date: Thu, 13 Jun 2024 11:47:30 +0530
+Subject: [PATCH 8/9] perf: test: Remove empty lines from branch filter test
+ output
+
+In the perf script command, spaces are turned into newlines. But when
+there is a double space this results in empty lines which fail the
+following inverse grep test, so strip the empty lines.
+
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Arnaldo Carvalho de Melo <acme@kernel.org>
+Cc: linux-perf-users@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Signed-off-by: James Clark <james.clark@arm.com>
+Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+---
+ tools/perf/tests/shell/test_brstack.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+--- a/tools/perf/tests/shell/test_brstack.sh
++++ b/tools/perf/tests/shell/test_brstack.sh
+@@ -68,7 +68,7 @@ test_filter() {
+ 	echo "Testing branch stack filtering permutation ($test_filter_filter,$test_filter_expect)"
+ 
+ 	perf record -o $TMPDIR/perf.data --branch-filter $test_filter_filter,save_type,u -- ${TESTPROG} > /dev/null 2>&1
+-	perf script -i $TMPDIR/perf.data --fields brstack | tr ' ' '\n' > $TMPDIR/perf.script
++	perf script -i $TMPDIR/perf.data --fields brstack | tr ' ' '\n' | sed '/^[[:space:]]*$/d' > $TMPDIR/perf.script
+ 
+ 	# fail if we find any branch type that doesn't match any of the expected ones
+ 	# also consider UNKNOWN branch types (-)

@@ -1,0 +1,66 @@
+From 3a7d0221bbfdff3a3119f86b03f8c4c6f86d1fc2 Mon Sep 17 00:00:00 2001
+From: James Clark <james.clark@arm.com>
+Date: Thu, 13 Jun 2024 11:47:29 +0530
+Subject: [PATCH 7/9] perf: test: Speed up running brstack test on an Arm model
+
+The test runs quite slowly in the model, so replace "xargs -n1" with
+"tr ' ' '\n'" which does the same thing but in single digit minutes
+instead of double digit minutes.
+
+Also reduce the number of loops in the test application. Unfortunately
+this causes intermittent failures on x86, presumably because the
+sampling interval is too big to pickup any loops, so keep it the same
+there.
+
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Arnaldo Carvalho de Melo <acme@kernel.org>
+Cc: linux-perf-users@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Signed-off-by: James Clark <james.clark@arm.com>
+Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+---
+ tools/perf/tests/shell/test_brstack.sh | 15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
+
+--- a/tools/perf/tests/shell/test_brstack.sh
++++ b/tools/perf/tests/shell/test_brstack.sh
+@@ -18,7 +18,6 @@ fi
+ skip_test_missing_symbol brstack_bench
+ 
+ TMPDIR=$(mktemp -d /tmp/__perf_test.program.XXXXX)
+-TESTPROG="perf test -w brstack"
+ 
+ cleanup() {
+ 	rm -rf $TMPDIR
+@@ -26,11 +25,21 @@ cleanup() {
+ 
+ trap cleanup EXIT TERM INT
+ 
++is_arm64() {
++	uname -m | grep -q aarch64
++}
++
++if is_arm64; then
++	TESTPROG="perf test -w brstack 5000"
++else
++	TESTPROG="perf test -w brstack"
++fi
++
+ test_user_branches() {
+ 	echo "Testing user branch stack sampling"
+ 
+ 	perf record -o $TMPDIR/perf.data --branch-filter any,save_type,u -- ${TESTPROG} > /dev/null 2>&1
+-	perf script -i $TMPDIR/perf.data --fields brstacksym | xargs -n1 > $TMPDIR/perf.script
++	perf script -i $TMPDIR/perf.data --fields brstacksym | tr ' ' '\n' > $TMPDIR/perf.script
+ 
+ 	# example of branch entries:
+ 	# 	brstack_foo+0x14/brstack_bar+0x40/P/-/-/0/CALL
+@@ -59,7 +68,7 @@ test_filter() {
+ 	echo "Testing branch stack filtering permutation ($test_filter_filter,$test_filter_expect)"
+ 
+ 	perf record -o $TMPDIR/perf.data --branch-filter $test_filter_filter,save_type,u -- ${TESTPROG} > /dev/null 2>&1
+-	perf script -i $TMPDIR/perf.data --fields brstack | xargs -n1 > $TMPDIR/perf.script
++	perf script -i $TMPDIR/perf.data --fields brstack | tr ' ' '\n' > $TMPDIR/perf.script
+ 
+ 	# fail if we find any branch type that doesn't match any of the expected ones
+ 	# also consider UNKNOWN branch types (-)
