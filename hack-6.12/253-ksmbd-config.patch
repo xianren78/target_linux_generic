@@ -1,6 +1,6 @@
 --- a/init/Kconfig
 +++ b/init/Kconfig
-@@ -2019,7 +2019,7 @@ config PADATA
+@@ -2020,7 +2020,7 @@ config PADATA
  	bool
  
  config ASN1
