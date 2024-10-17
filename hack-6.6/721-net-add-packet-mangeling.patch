@@ -35,9 +35,9 @@ Signed-off-by: Felix Fietkau <nbd@nbd.name>
  
  /* Specifies the type of the struct net_device::ml_priv pointer */
  enum netdev_ml_priv_type {
-@@ -2233,6 +2235,11 @@ struct net_device {
- 	const struct tlsdev_ops *tlsdev_ops;
- #endif
+@@ -2185,6 +2187,11 @@ struct net_device {
+ 
+ 	const struct header_ops *header_ops;
  
 +#ifdef CONFIG_ETHERNET_PACKET_MANGLE
 +	void (*eth_mangle_rx)(struct net_device *dev, struct sk_buff *skb);
@@ -47,7 +47,7 @@ Signed-off-by: Felix Fietkau <nbd@nbd.name>
  	unsigned char		operstate;
  	unsigned char		link_mode;
  
-@@ -2302,6 +2309,10 @@ struct net_device {
+@@ -2256,6 +2263,10 @@ struct net_device {
  	struct mctp_dev __rcu	*mctp_ptr;
  #endif
  
