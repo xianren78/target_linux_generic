@@ -201,7 +201,7 @@ Signed-off-by: Kevin Darbyshire-Bryant <ldir@darbyshire-bryant.me.uk>
 +	{
 +		.name           = "CONNMARK",
 +		.revision       = 3,
-+		.family         = NFPROTO_UNSPEC,
++		.family         = NFPROTO_IPV4,
 +		.checkentry     = connmark_tg_check,
 +		.target         = connmark_tg_v3,
 +		.targetsize     = sizeof(struct xt_connmark_tginfo3),
